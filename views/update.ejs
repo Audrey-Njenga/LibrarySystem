@@ -1,0 +1,17 @@
+<p>Update Privilege</p>
+
+<form action="/update/privilege/<%= user.id %>" method="post">
+    <div class="container">
+        <input type="radio" id="admin" name="type" value="admin">
+        <label for="admin">Admin</label><br>
+        <input type="radio" id="css" name="type" value="librarian">
+        <label for="librarian">Librarian</label><br>
+        <input type="radio" id="javascript" name="type" value="staff">
+        <label for="staff">Staff</label>
+        <input type="radio" id="javascript" name="type" value="student">
+        <label for="student">Student</label>
+
+        <button type="submit">Save</button>
+    </div>
+
+</form>

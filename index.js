@@ -48,7 +48,13 @@ connection.connect(function(err) {
 app.get('/',(req,res) => {
     session=req.session;
     if(session.userid){
-        res.send('Welcome' + session.userid);
+        if(results[0].type === 'admin'){                   
+            res.send('Hello Admin!');
+        }else if(results[0].type === 'librarian'){
+            res.send('Hello Librariam!');
+        }else{
+            res.send('Hello Student/staff');
+        }
     }else{
         res.render('login.ejs')
     }
@@ -110,9 +116,10 @@ app.post('/login', (req, res) => {
 
 
 app.get('/admin',(req,res) => {
-    // session=req.session;
     if(session.userid && type==="admin"){
-        res.render('admin.ejs')
+        connection.query('SELECT * FROM users', (error, results) => {
+            res.render('admin.ejs', {users: results});
+        })
     }else{
         res.redirect('/')
     }
@@ -143,3 +150,60 @@ app.get('/logout',(req,res) => {
     req.session.destroy();
     res.redirect('/');
 });
+
+
+
+app.get('/create', (req, res) => {
+    if(session.userid && type==="admin"){
+       res.render('create.ejs');
+    }else{
+        res.redirect('/')
+    }
+
+})
+
+app.post('/create/user', (req, res) => {
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hash = bcrypt.hashSync('0000', salt);
+    if(session.userid && type==="admin"){
+        connection.query('INSERT INTO users (username, email, password, type) VALUES (?, ?, ?, ?)', [req.body.username, req.body.email, hash, req.body.type] ,(error, results) => {
+            res.redirect('/admin')
+        })
+    }else{
+        res.redirect('/')
+    }
+    
+})
+
+app.get('/update/:id', (req, res) => {
+    if(session.userid && type==="admin"){
+        connection.query('SELECT * FROM users WHERE id = ?', [req.params.id] ,(error, results) => {
+            res.render('update.ejs', {user: results[0]});
+        })
+    }else{
+        res.redirect('/')
+    }
+    
+})
+
+app.post('/update/privilege/:id', (req, res) => {
+    if(session.userid && type==="admin"){
+        connection.query('UPDATE users SET type=? WHERE id = ?', [req.body.type, req.params.id] ,(error, results) => {
+            res.redirect('/admin')
+        })
+    }else{
+        res.redirect('/')
+    }
+    
+})
+
+app.post('/remove/user/:id', (req, res) => {
+    if(session.userid && type==="admin"){
+        connection.query('DELETE FROM users WHERE id = ?', [req.params.id] ,(error, results) => {
+            res.redirect('/admin')
+        })
+    }else{
+        res.redirect('/')
+    }
+    
+})
