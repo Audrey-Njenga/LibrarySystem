@@ -1,0 +1,18 @@
+<p>login page</p>
+
+<form action="/login" method="post">
+    <div class="container">
+        <% if (typeof(error) != "undefined"){ %>
+        <p><%=  error %></p>
+        <% } %>
+
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+
+        <button type="submit">Login</button>
+    </div>
+
+</form>
