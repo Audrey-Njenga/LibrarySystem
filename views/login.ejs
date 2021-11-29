@@ -1,18 +1,25 @@
-<p>login page</p>
+<%- include('header'); -%>
 
-<form action="/login" method="post">
-    <div class="container">
-        <% if (typeof(error) != "undefined"){ %>
-        <p><%=  error %></p>
-        <% } %>
+    <body>
+        <div class="container">
+            <h4>Hello,</h4>
 
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required>
+            <form action="/login" method="post">
+                <div class="container">
+                    <input type="text" placeholder="Enter email" name="email" required>
+                    <br><br>
+                    <input type="password" placeholder="Enter password" name="password" required>
+                    <br><br>
+                    <% if (typeof(error) !="undefined" ){ %>
+                        <p>
+                            <%= error %>
+                        </p>
+                        <% } %><br>
+                            <button type="submit">Login</button>
+                </div>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+            </form>
+        </div>
+    </body>
 
-        <button type="submit">Login</button>
-    </div>
-
-</form>
+    <%- include('footer'); -%>
