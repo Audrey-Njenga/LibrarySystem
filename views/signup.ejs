@@ -1,42 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Sign Up Page</title>
-</head>
+<%- include('header'); -%>
 
 <body>
     <div class="container">
-        <h1> Sign Up</h1>
+        <h2> Register</h2>
         <form action="" method="POST">
-            <div class="form-group">
+            <div>
                 <label for="firstName">First Name</label>
                 <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" name="firstName"
-                    placeholder="Enter email" />
+                    placeholder="Enter first name" required />
             </div>
-            <div class="form-group">
+            <div>
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Password" name="lastName"/>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter last name" name="lastName" required/>
             </div>
-            <div class="form-group">
+            <div>
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" name="email"
-                    placeholder="Enter email" />
+                    placeholder="Enter email address" required />
             </div>
-            <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password"/>
+                <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required/>
             </div>            
             <% if(typeof msg != 'undefined'){ %>
-                <div class="success-msg"><%= msg %></div><% }
+                <div class="success-msg" style="color: green;"><%= msg %></div><% }
                 if(typeof error !== 'undefined'){ %>
-                <div class="err-msg"><%= error %></div><% } %>
+                <div class="err-msg" style="color: red;"><%= error %></div><% } %> <br> <br>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        <div class="link"><a href="./login">Login</a></div>
+        <br><br>
+        <div class="link"><a href="/">Go to Login</a></div>
     </div>
 </body>
 
 </html>
+<%- include('footer'); -%>
