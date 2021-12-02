@@ -4,38 +4,50 @@ exports.librarianLandingPage = (req, res, next) => {
     res.render('librarian');
 }
 
-exports.searchBook = async (req, res, next) => {
+exports.searchBook = (req, res, next) => {
     const { body } = req;
-    book = body.bookTitle;
-    author = body.author;
-    bookId = body.bookId;
-    const [row] = await conn.query(
-        "SELECT * FROM `books` WHERE `title`=?" ||
-        [bookTitle]
+    param = body.searchParameter;
+    conn.query(
+        "SELECT * FROM `books` WHERE `title` LIKE ?",
+        ['% '+param+' %'], function (err, books) {
+            if (err) {
+                res.render('librarian', { msg: err });
+            }
+
+            if (books.affectedRows >= 1) {
+                return res.render('librarian', {
+                    'books': books
+                });
+
+            }
+            res.render('librarian', {
+                msg: 'Book not found'
+            })
+
+        }
     );
 
-    if (row.length >= 1) {
-        return res.render('signup', {
 
-        });
-    }
 }
 
-exports.createBook = async (req, res, next) => {
+exports.createBook = (req, res, next) => {
     const { body } = req;
 
     try {
-        const [rows] = await conn.query("INSERT INTO `books`(`title`, `author`, `ISBN`) VALUES(?,?,?)", [body.title, body.author, body.ISBN]);
+        // check for repeated isbn, isbn is id
+        conn.query("INSERT INTO `books`(`title`, `author`, `ISBN`) VALUES(?,?,?)", [body.title, body.author, body.ISBN], function (err, rows) {
+            if (rows.affectedRows !== 1) {
+                return res.render('librarian', {
+                    error: 'Book registrations has failed.'
+                });
+            }
 
-        if (rows.affectedRows !== 1) {
-            return res.render('librarian', {
-                error: 'Book registrations has failed.'
+            res.render("librarian", {
+                msg: 'Book successfully created.'
             });
-        }
-
-        res.render("librarian", {
-            msg: 'Book successfully created.'
         });
+
+
     }
     catch (e) {
         console.log(e);

@@ -1,2 +1,42 @@
-<p>regular</p>
-<a href="/logout">Logout</a>
+<%- include('header'); -%>
+
+    <body>
+        <div id="landing" style="display: grid; grid-auto-flow: row;" class="container">
+            <div class="container">
+                <a href="/logout">Logout</a><br> <br>
+                <h4>Welcome,</h4><br><br>
+                <form method="POST" action="/search">
+                    <input class="form-control" type="text" placeholder="Search for a book" name="searchParameter">
+                    </input> <br>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form><br><br>
+            </div>
+            <div id="results" style="height: 5em; scroll-behavior: smooth;">
+                <% if ( typeof books !="undefined" ){ %>
+                    <table>
+                        <% for (var i=0; i < books.length; i++ ) { %>
+                            <tr>
+                                <td>
+                                    <%= books[i].title %>
+                                </td>
+                                <td>
+                                    <%= books[i].author %>
+                                </td>
+                                <td>
+                                    <%= books[i].ISBN %>
+                                </td>
+                            </tr>
+                            <% } %><br>
+                    </table>
+                    <% } %>
+                        <% if(typeof msg !='undefined' ){ %>
+                            <div class="success-msg" style="color: red;">
+                                <%= msg %>
+                            </div>
+
+                            <% } %>
+            </div>
+            <br><br>
+
+    </body>
+    <%- include('footer'); -%>

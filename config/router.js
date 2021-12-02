@@ -41,39 +41,44 @@ router.post('/signup', [
  * User login apis
  */
 
-router.post('/login', async (req, res) => {
+router.post('/login', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     try {
         if (email && password) {
-            const [results] = await connection.query(
-                'SELECT * FROM users WHERE email = ?', [email]);
 
-            if (results.length > 0) {
-                //TODO: results[0].password is undefined
-                const validPassword = bcrypt.compareSync(password, results[0].password);
+            connection.query("SELECT * FROM `users` WHERE `email` = ? ", [email], function (err, results) {
+                if (err) throw err;
+                if (results.length > 0) {
+                    //TODO: results[0].password is undefined
 
-                if (validPassword) {
-                    session = req.session;
-                    session.userid = email;
-                    type = results[0].type;
+                    const validPassword = bcrypt.compareSync(password, results[0].password);
 
-                    if (results[0].type === 'admin') {
-                        res.redirect(`/admin`);
-                    } else if (results[0].type === 'librarian') {
-                        res.redirect(`/librarian`);
+                    if (validPassword) {
+                        session = req.session;
+                        session.userid = email;
+                        type = results[0].type;
+
+                        if (results[0].type === 'admin') {
+                            res.redirect(`/admin`);
+                        } else if (results[0].type === 'librarian') {
+                            res.redirect(`/librarian`);
+                        } else {
+                            res.redirect(`/regular`);
+                        }
                     } else {
-                        res.redirect(`/regular`);
+                        error = 'invalid password'
+                        res.render('login.ejs', { error: error })
                     }
                 } else {
-                    error = 'invalid password'
+                    error = 'invalid email/password'
                     res.render('login.ejs', { error: error })
                 }
-            } else {
-                error = 'invalid email/password'
-                res.render('login.ejs', { error: error })
-            }
-            res.end();
+                res.end();
+
+            })
+
+
 
         } else {
             res.send('Please enter email and password');
@@ -112,16 +117,22 @@ router.post('search',
         .escape()
         .trim()],
     searchBook)
+
+router.get('/regular', (req, res) => {
+    res.render('regular');
+})
+
 router.get('/', (req, res) => {
     session = req.session;
     if (session.userid) {
-        if (results[0].type === 'admin') {
-            res.send('Hello Admin!');
-        } else if (results[0].type === 'librarian') {
-            res.send('Hello Librarian!');
-        } else {
-            res.send('Hello Student/Staff!');
-        }
+        // TODO: check type
+        // if (results[0].type === 'admin') {
+        //     res.send('Hello Admin!');
+        // } else if (results[0].type === 'librarian') {
+        //     res.send('Hello Librarian!');
+        // } else {
+        //     res.send('Hello Student/Staff!');
+        // }
     } else {
         res.render('login.ejs')
     }
@@ -139,6 +150,11 @@ router.post('/upload',
         .escape()
         .trim()], createBook)
 
+router.post('/search',
+    [body("searchParameter").notEmpty()
+        .escape()
+        .trim(),
+    ], searchBook)
 
 /**
  * Staff/Student controllers
@@ -158,9 +174,9 @@ router.get('/regular', (req, res) => {
  * Admin controllers
  */
 
-router.get('/admin', async (req, res) => {
+router.get('/admin', (req, res) => {
     if (session.userid && type === "admin") {
-        await connection.query('SELECT * FROM users', (error, results) => {
+        connection.query('SELECT * FROM users', (error, results) => {
             res.render('admin.ejs', { users: results });
         })
     } else {
@@ -178,11 +194,11 @@ router.get('/create', (req, res) => {
 
 })
 
-router.post('/create/user', async (req, res) => {
+router.post('/create/user', (req, res) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync('0000', salt);
     if (session.userid && type === "admin") {
-        await connection.query('INSERT INTO users (firstName, lastName, email, password, type) VALUES (?, ?, ?, ?, ?)', [req.body.firstName, req.body.lastName, req.body.email, hash, req.body.type], (error, results) => {
+        connection.query('INSERT INTO users (firstName, lastName, email, password, type) VALUES (?, ?, ?, ?, ?)', [req.body.firstName, req.body.lastName, req.body.email, hash, req.body.type], (error, results) => {
             res.redirect('/admin')
         })
     } else {

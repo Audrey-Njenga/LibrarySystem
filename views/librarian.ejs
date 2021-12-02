@@ -1,28 +1,54 @@
 <%- include('header'); -%>
-<body>
-    <div id="landing" style="display: grid; grid-auto-flow: row;" class="container">
-        <div class="container">
-            <a href="/logout">Logout</a><br> <br>
-            <h4>Welcome Librarian,</h4><br><br>
-            
-            <input class="form-control" type="text" placeholder="Search for a book"> </input><br><br>
-        </div>
-        <div id="results" style="height: 5em;">
 
-        </div>
-        <br><br>
-        <div id="upload" class="container">
-            <h4>New Book</h4>
-            <form method="POST" action="/upload">
-            <input class="form-control" name="title" type="text" placeholder="Enter Title" required><br><br>
-            <input class="form-control" name="author" type="text" placeholder="Enter Author" required><br><br>
-            <input class="form-control" name="ISBN" type="text" placeholder="Enter ISBN"><br><br>
-            <button type="submit" class="btn btn-primary">
-                Create
-            </button><br><br>
-        </form>
-        </div>
-    </div>
+    <body>
+        <div id="landing" style="display: grid; grid-auto-flow: row;" class="container">
+            <div class="container">
+                <a href="/logout">Logout</a><br> <br>
+                <h4>Welcome Librarian,</h4><br><br>
+                <form method="POST" action="/search">
+                    <input class="form-control" type="text" placeholder="Search for a book" name="searchParameter">
+                    </input> <br>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form><br><br>
+            </div>
+            <div id="results" style="height: 5em; scroll-behavior: smooth;">
+                <% if ( typeof books !="undefined" ){ %>
+                    <table>
+                        <% for (var i=0; i < books.length; i++ ) { %>
+                            <tr>
+                                <td>
+                                    <%= books[i].title %>
+                                </td>
+                                <td>
+                                    <%= books[i].author %>
+                                </td>
+                                <td>
+                                    <%= books[i].ISBN %>
+                                </td>
+                            </tr>
+                            <% } %><br>
+                    </table>
+                    <% } %>
+                        <% if(typeof msg !='undefined' ){ %>
+                            <div class="success-msg" style="color: red;">
+                                <%= msg %>
+                            </div>
 
-</body>
-<%- include('footer'); -%>
+                            <% } %>
+            </div>
+            <br><br>
+            <div id="upload" class="container">
+                <h4>New Book</h4>
+                <form method="POST" action="/upload">
+                    <input class="form-control" name="title" type="text" placeholder="Enter Title" required><br><br>
+                    <input class="form-control" name="author" type="text" placeholder="Enter Author" required><br><br>
+                    <input class="form-control" name="ISBN" type="text" placeholder="Enter ISBN"><br><br>
+                    <button type="submit" class="btn btn-primary">
+                        Create
+                    </button><br><br>
+                </form>
+            </div>
+        </div>
+
+    </body>
+    <%- include('footer'); -%>
