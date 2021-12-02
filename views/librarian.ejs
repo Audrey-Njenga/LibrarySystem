@@ -2,7 +2,7 @@
 
     <body>
         <div id="landing" class="d-flex flex-row justify-content-between">
-            <div class="w-25 container">
+            <div class="w-50 container">
                 <a href="/logout" class="btn btn-outline-danger mt-3">Logout</a><br> <br>
                 <h4>Welcome Librarian,</h4><br>
                 <form method="POST" action="/search">
@@ -13,20 +13,43 @@
 
                 <div id="results" style="height: 5em; scroll-behavior: smooth;">
                     <% if ( typeof books !="undefined" ){ %>
-                        <table>
-                            <% for (var i=0; i < books.length; i++ ) { %>
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <%= books[i].title %>
-                                    </td>
-                                    <td>
-                                        <%= books[i].author %>
-                                    </td>
-                                    <td>
-                                        <%= books[i].ISBN %>
-                                    </td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Author</th>
+                                    <th scope="col">ISBN</th>
+                                    <th scope="col">Status</th>
                                 </tr>
-                                <% } %><br>
+                            </thead>
+                            <tbody>
+                                <% for (var i=0; i < books.length; i++ ) { %>
+                                    <tr>
+                                        <td>
+                                            <%= i %>
+                                        </td>
+                                        <td>
+                                            <%= books[i].title %>
+                                        </td>
+                                        <td>
+                                            <%= books[i].author %>
+                                        </td>
+                                        <td>
+                                            <%= books[i].ISBN %>
+                                        </td>
+                                        <% if(books[i].status===0 ) { %>
+                                        <td class="text-primary">
+                                            Not Borrowed
+                                        </td>
+                                        <% }else if(books[i].status===1 ){ %>
+                                            <td class="text-success">
+                                                Borrowed
+                                            </td>
+                                            <%}%>
+                                    </tr>
+                                    <% } %><br>
+                            </tbody>                            
                         </table>
                         <% } %>
                             <% if(typeof msg !='undefined' ){ %>
