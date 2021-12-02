@@ -17,9 +17,9 @@ app.use(sessions({
 
 // a variable to save a session
 app.use(cookieParser());
-var session;
-var type;
 
+app.use('/css', express.static('./node_modules/bootstrap/dist/css'));
+app.use('/js', express.static('./node_modules/bootstrap/dist/js'));
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: false}));

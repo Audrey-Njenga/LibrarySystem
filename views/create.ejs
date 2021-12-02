@@ -1,19 +1,38 @@
 <%- include('header'); -%>
-<p>Create New User</p>
+    <div class="position-absolute top-50 start-50 translate-middle border" style="width: 500px;">
+        <form action="/create/user" method="post" class="p-5">
+            <h2 class="text-center ">Create New User</h2>
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" name="firstName" placeholder="e.g Jane" required class="form-control"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" name="lastName" placeholder="e.g Doe" required class="form-control"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" name="email" placeholder="e.g hello@gmail.com" required class="form-control"
+                    aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Privilege</label>
+                <select class="form-select" aria-label="Default select example" required name="type">
+                    <option selected>Default</option>
+                    <option value="admin">Admin</option>
+                    <option value="librarian">Librarian</option>
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
 
-<form action="/create/user" method="post">
-    <div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required>
-        
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
 
-        <label for="type"><b>Type</b></label>
-        <input type="text" placeholder="Enter User Privilege" name="type" required>
 
-        <button type="submit">Save</button>
+        </form>
     </div>
-
-</form>
-<%- include('footer'); -%>
+    <%- include('footer'); -%>

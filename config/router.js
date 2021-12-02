@@ -2,17 +2,24 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const { body } = require('express-validator');
-const { librarianLandingPage, createBook, searchBook } = require('../api/librarian_controller');
+const { createBook, searchBook } = require('../api/librarian_controller');
 const { signUp, signUpPage } = require('../api/user_controller');
 const connection = require('../config/db');
 
-
+var session, type;
 
 /** 
  * User sign up controllers
  */
 
-router.get('/signup', signUpPage);
+router.get('/signup', (req, res) => {
+    session=req.session;
+     if(session.userid){
+        res.redirect('/')
+    }else{
+        res.render('signup.ejs')
+    }
+});
 
 router.post('/signup', [
     body("firstName", "The name must be of minimum 3 characters length")
@@ -42,7 +49,11 @@ router.post('/signup', [
  */
 
 router.post('/login', (req, res) => {
-    var email = req.body.email;
+    session=req.session;
+     if(session.userid && type === 'librarian'){
+        res.redirect('/')
+    }else{
+         var email = req.body.email;
     var password = req.body.password;
     try {
         if (email && password) {
@@ -60,11 +71,11 @@ router.post('/login', (req, res) => {
                         type = results[0].type;
 
                         if (results[0].type === 'admin') {
-                            res.redirect(`/admin`);
+                            res.redirect(`/`);
                         } else if (results[0].type === 'librarian') {
-                            res.redirect(`/librarian`);
+                            res.redirect(`/`);
                         } else {
-                            res.redirect(`/regular`);
+                            res.redirect(`/`);
                         }
                     } else {
                         error = 'invalid password'
@@ -88,6 +99,8 @@ router.post('/login', (req, res) => {
     catch (e) {
         console.log(e);
     }
+    }
+   
 });
 
 router.get('/logout', (req, res) => {
@@ -100,17 +113,16 @@ router.get('/logout', (req, res) => {
  * Librarian controllers
  */
 
-router.get('/librarian', librarianLandingPage);
+// router.get('/librarian', librarianLandingPage);
 
-// router.get('/librarian', (req, res) => {
-//     // session=req.session;
-//     if (session.userid && type === "librarian") {
-//         res.render('librarian.ejs')
-//     } else {
-//         res.redirect('/')
-//     }
-
-// });
+router.get('/librarian', (req, res) => {
+    session=req.session;
+    if(session.userid && type === 'librarian'){
+            res.render('librarian.ejs')        
+    }else{
+        res.redirect('/');
+    }
+});
 
 router.post('search',
     [body("parameter").notEmpty()
@@ -124,15 +136,10 @@ router.get('/regular', (req, res) => {
 
 router.get('/', (req, res) => {
     session = req.session;
-    if (session.userid) {
-        // TODO: check type
-        // if (results[0].type === 'admin') {
-        //     res.send('Hello Admin!');
-        // } else if (results[0].type === 'librarian') {
-        //     res.send('Hello Librarian!');
-        // } else {
-        //     res.send('Hello Student/Staff!');
-        // }
+     if (session.userid) {
+       connection.query('SELECT * FROM users WHERE email = ?', [session.userid] ,(error, results) => {
+            res.render('success.ejs', { user: results[0] });
+        })         
     } else {
         res.render('login.ejs')
     }
@@ -161,7 +168,7 @@ router.post('/search',
  */
 
 router.get('/regular', (req, res) => {
-    // session=req.session;
+    session=req.session;
     if (session.userid && type === "regular") {
         res.render('regular.ejs')
     } else {
@@ -175,6 +182,7 @@ router.get('/regular', (req, res) => {
  */
 
 router.get('/admin', (req, res) => {
+    session=req.session;
     if (session.userid && type === "admin") {
         connection.query('SELECT * FROM users', (error, results) => {
             res.render('admin.ejs', { users: results });
@@ -186,6 +194,7 @@ router.get('/admin', (req, res) => {
 });
 
 router.get('/create', (req, res) => {
+    session=req.session;
     if (session.userid && type === "admin") {
         res.render('create.ejs');
     } else {
@@ -195,6 +204,7 @@ router.get('/create', (req, res) => {
 })
 
 router.post('/create/user', (req, res) => {
+    session=req.session;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync('0000', salt);
     if (session.userid && type === "admin") {
@@ -208,6 +218,7 @@ router.post('/create/user', (req, res) => {
 })
 
 router.get('/update/:id', (req, res) => {
+    session=req.session;
     if (session.userid && type === "admin") {
         connection.query('SELECT * FROM users WHERE id = ?', [req.params.id], (error, results) => {
             res.render('update.ejs', { user: results[0] });
@@ -219,6 +230,7 @@ router.get('/update/:id', (req, res) => {
 })
 
 router.post('/update/privilege/:id', (req, res) => {
+    session=req.session;
     if (session.userid && type === "admin") {
         connection.query('UPDATE users SET type=? WHERE id = ?', [req.body.type, req.params.id], (error, results) => {
             res.redirect('/admin')
@@ -230,6 +242,7 @@ router.post('/update/privilege/:id', (req, res) => {
 })
 
 router.post('/remove/user/:id', (req, res) => {
+    session=req.session;
     if (session.userid && type === "admin") {
         connection.query('DELETE FROM users WHERE id = ?', [req.params.id], (error, results) => {
             res.redirect('/admin')

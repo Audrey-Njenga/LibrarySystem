@@ -1,43 +1,46 @@
 <%- include('header'); -%>
 
     <body>
-        <div id="landing" style="display: grid; grid-auto-flow: row;" class="container">
-            <div class="container">
-                <a href="/logout">Logout</a><br> <br>
-                <h4>Welcome Librarian,</h4><br><br>
+        <div id="landing" class="d-flex flex-row justify-content-between">
+            <div class="w-25 container">
+                <a href="/logout" class="btn btn-outline-danger mt-3">Logout</a><br> <br>
+                <h4>Welcome Librarian,</h4><br>
                 <form method="POST" action="/search">
                     <input class="form-control" type="text" placeholder="Search for a book" name="searchParameter">
                     </input> <br>
                     <button class="btn btn-primary" type="submit">Search</button>
                 </form><br><br>
-            </div>
-            <div id="results" style="height: 5em; scroll-behavior: smooth;">
-                <% if ( typeof books !="undefined" ){ %>
-                    <table>
-                        <% for (var i=0; i < books.length; i++ ) { %>
-                            <tr>
-                                <td>
-                                    <%= books[i].title %>
-                                </td>
-                                <td>
-                                    <%= books[i].author %>
-                                </td>
-                                <td>
-                                    <%= books[i].ISBN %>
-                                </td>
-                            </tr>
-                            <% } %><br>
-                    </table>
-                    <% } %>
-                        <% if(typeof msg !='undefined' ){ %>
-                            <div class="success-msg" style="color: red;">
-                                <%= msg %>
-                            </div>
 
-                            <% } %>
+                <div id="results" style="height: 5em; scroll-behavior: smooth;">
+                    <% if ( typeof books !="undefined" ){ %>
+                        <table>
+                            <% for (var i=0; i < books.length; i++ ) { %>
+                                <tr>
+                                    <td>
+                                        <%= books[i].title %>
+                                    </td>
+                                    <td>
+                                        <%= books[i].author %>
+                                    </td>
+                                    <td>
+                                        <%= books[i].ISBN %>
+                                    </td>
+                                </tr>
+                                <% } %><br>
+                        </table>
+                        <% } %>
+                            <% if(typeof msg !='undefined' ){ %>
+                                <div class="success-msg" style="color: red;">
+                                    <%= msg %>
+                                </div>
+                
+                                <% } %>
+                </div>
             </div>
+            
+            
             <br><br>
-            <div id="upload" class="container">
+            <div id="upload" class="w-25 container">
                 <h4>New Book</h4>
                 <form method="POST" action="/upload">
                     <input class="form-control" name="title" type="text" placeholder="Enter Title" required><br><br>

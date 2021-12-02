@@ -1,0 +1,30 @@
+<%- include('header'); -%>
+
+<div class="position-absolute top-50 start-50 translate-middle border p-5 " style="width: 500px;">
+    <% if(user.type==='admin' ) { %>
+        <h3>Hello <span class="text-primary"><%=user.firstName%>!</span></h3>
+        <p>You Have logged in successfully!</p>
+    
+        <p>Go to <a href="/admin" class="text-decoration-none">Admin Page</a></p>
+        <% }else if(user.type==='librarian' ){ %>
+            <h3>Hello <span class="text-primary">
+                <%=user.firstName%>!
+            </span></h3>
+            <p>You Have logged in successfully!</p>
+    
+            <p>Go to <a href="/librarian" class="text-decoration-none">librarian Page</a></p>
+            <% } else{ %>
+                <h3>Hello <span class="text-primary">
+                    <%=user.firstName%>!
+                </span></h3>
+                <p>You Have logged in successfully!</p>
+    
+                <p>Go to <a href="/regular" class="text-decoration-none">
+                        <%=type%> Page
+                    </a></p>
+                <%}%>
+
+</div>
+
+
+<%- include('footer'); -%>

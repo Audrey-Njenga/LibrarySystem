@@ -1,36 +1,52 @@
 <%- include('header'); -%>
 
-<body>
-    <div class="container">
-        <h2> Register</h2>
-        <form action="" method="POST">
-            <div>
-                <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" name="firstName"
-                    placeholder="Enter first name" required />
-            </div>
-            <div>
-                <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Enter last name" name="lastName" required/>
-            </div>
-            <div>
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" name="email"
-                    placeholder="Enter email address" required />
-            </div>
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required/>
-            </div>            
-            <% if(typeof msg != 'undefined'){ %>
-                <div class="success-msg" style="color: green;"><%= msg %></div><% }
-                if(typeof error !== 'undefined'){ %>
-                <div class="err-msg" style="color: red;"><%= error %></div><% } %> <br> <br>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        <br><br>
-        <div class="link"><a href="/">Go to Login</a></div>
-    </div>
-</body>
 
-</html>
-<%- include('footer'); -%>
+    <body>
+        <div class="position-absolute top-50 start-50 translate-middle border" style="width: 500px;">
+            <form class="p-5" action="" method="post">
+                <h2 class="text-center ">Register</h2>
+                <div class="form-text text-center mb-2">Create an Account!</div>
+                <% if(typeof msg !='undefined' ){ %>
+                    <div class="border border-light bg-success bg-opacity-10 text-success p-2 rounded mb-2">
+                        <%= msg %>
+                    </div>
+                    <% } if(typeof error !=='undefined' ){ %>
+                        <div class="border border-light bg-danger bg-opacity-10 text-danger p-2 rounded mb-2">
+                            <%= error %>
+                        </div>
+                        <% } %>
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" name="firstName" placeholder="e.g Jane" required class="form-control"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" name="lastName" placeholder="e.g Doe" required class="form-control"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" name="email" placeholder="e.g hello@gmail.com" required
+                                    class="form-control" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Password</label>
+                                <input type="password" name="password" placeholder="Must have at least 12 characters"
+                                    required class="form-control">
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                            <p class="mt-3">Already have an account? <a class="text-decoration-none" href="/">Login</a>
+                            </p>
+            </form>
+        </div>
+
+
+    </body>
+
+    </html>
+    <%- include('footer'); -%>

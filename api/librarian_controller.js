@@ -9,20 +9,18 @@ exports.searchBook = (req, res, next) => {
     param = body.searchParameter;
     conn.query(
         "SELECT * FROM `books` WHERE `title` LIKE ?",
-        ['% '+param+' %'], function (err, books) {
-            if (err) {
-                res.render('librarian', { msg: err });
-            }
-
-            if (books.affectedRows >= 1) {
+        ['%'+param+'%'], function (err, books) {
+            if (books.length > 0) {
                 return res.render('librarian', {
                     'books': books
                 });
 
+            }else if (err) {
+                res.render('librarian', { msg: err });
             }
-            res.render('librarian', {
-                msg: 'Book not found'
-            })
+            // res.render('librarian', {
+            //     msg: 'Book not found'
+            // })
 
         }
     );
