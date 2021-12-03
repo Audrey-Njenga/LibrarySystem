@@ -42,11 +42,11 @@
                                             <%= books[i].ISBN %>
                                         </td>
                                         <% if(books[i].status===0 ) { %>
-                                            <td class="text-primary">
+                                            <td >
                                                 Not Borrowed
                                             </td>
                                             <% }else if(books[i].status===1 ){ %>
-                                                <td class="text-success">
+                                                <td >
                                                     Borrowed
 
                                                 </td>
@@ -54,7 +54,7 @@
 
 
                                                 <%}%>
-                                                    <td><a href="/view/<%= books[i] %>" clas="link-info">View</a></td>>
+                                                    <td><a href="/viewBook/<%= books[i].id %>" class="link-info">View</a></td>>
                                     </tr>
 
 
@@ -63,7 +63,7 @@
                         </table>
                         <% } %>
                             <% if(typeof msg !='undefined' ){ %>
-                                <div class="success-msg" style="color: red;">
+                                <div class="success-msg" style="color: green;">
                                     <%= msg %>
                                 </div>
 

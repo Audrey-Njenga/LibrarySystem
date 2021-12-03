@@ -28,6 +28,31 @@ exports.searchBook = (req, res, next) => {
 
 }
 
+exports.regularSearch =
+(req, res, next) => {
+    const { body } = req;
+    param = body.searchParameter;
+    conn.query(
+        "SELECT * FROM `books` WHERE `title` LIKE ?",
+        ['%'+param+'%'], function (err, books) {
+            if (books.length > 0) {
+                return res.render('regular', {
+                    'books': books
+                });
+
+            }else if (err) {
+                res.render('regular', { msg: err });
+            }
+            // res.render('librarian', {
+            //     msg: 'Book not found'
+            // })
+
+        }
+    );
+
+
+}
+
 exports.createBook = (req, res, next) => {
     const { body } = req;
 
@@ -51,17 +76,3 @@ exports.createBook = (req, res, next) => {
         console.log(e);
     }
 }
-
-exports.updateBook = (req, res) => {
-    const { body } = req;
-    try{
-        conn.query("UPDATE `books` SET ")
-    }
-    catch(err){
-        throw(err);
-    }
-}
-
-exports.deleteBook = (req, res)  => {}
-
-exports.lendBook = (req, res) => {}

@@ -7,10 +7,6 @@ const complexityOptions = {
     uppercase: 1, numeric: 1, symbol: 1
 };
 
-exports.signUpPage = (req, res, next) => {
-    res.render('signup');
-}
-
 exports.signUp = (req, res, next) => {
     const errors = validationResult(req);
     const { body } = req;
@@ -36,7 +32,7 @@ exports.signUp = (req, res, next) => {
 
 
 
-        if (joiPassword(complexityOptions).validate(body.password) === false) {
+        if (!joiPassword(complexityOptions).validate(body.password)) {
             return res.render('signup', {
                 error: 'The password must be of length 8-16 with at least one uppercase, one number and one special character'
             })

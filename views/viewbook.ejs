@@ -3,16 +3,27 @@
     <body>
         <div class="container">
             <h2><%=book.title%></h2>
+            <h3><%=book.author%></h3><br>
+            <h4><%= book.ISBN %></h4><br><br>
+            
             <div >
-                <form action="/update/<%= book.id %>"method="POST">
-                    <input type="text" name="title" placeholder="Enter title"><br><br>
-                    <input type="text" name="author" placeholder="Enter author"><br><br>
-                    <input type="text" name="ISBN" placeholder="Enter title"><br><br>
+                <form action="/updateBook/<%= book.id %>"method="POST">
+                    <input type="text" name="title" placeholder="Enter title" required ><br><br>
+                    <input type="text" name="author" placeholder="Enter author" required><br><br>
+                    <input type="text" name="ISBN" placeholder="Enter ISBN" required><br><br>
                     <button type="submit" class="btn btn-primary">Update</button></form><br><br>
-                <form method="POST" action="/delete/<%= book.id %>"><button type="submit" class="btn btn-danger" >Delete</button></form><br><br>
-                <form action="/lend/<%= book.id %>" method="POST">
-                    <button type="submit" class="btn btn-info">Lend</button></form><br><br>
+                <form method="POST" action="/deleteBook/<%= book.id %>"><button type="submit" class="btn btn-danger" >Delete</button></form><br><br>
+                  
+                    <% if(typeof msg !='undefined' ){ %>
+                        <div class="border border-light bg-success bg-opacity-10 text-success p-2 rounded mb-2">
+                            <%= msg %>
+                        </div>
+                        <% } if(typeof error !=='undefined' ){ %>
+                            <div class="border border-light bg-danger bg-opacity-10 text-danger p-2 rounded mb-2">
+                                <%= error %>
+                    <% } %>
             </div>
+            <a href='/librarian'>Go back to homepage</a>
         </div>
     </body>
 
