@@ -255,13 +255,13 @@ router.post('/borrow/:id', (req, res) => {
             if (results.affectedRows >= 1) {
                 connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
                     if (err) { throw err; };
-                    res.render('viewbook', { book: book[0], msg: "Updated successfully" });
+                    res.render('borrow', { book: book[0], msg: "Updated successfully" });
                 })
             }
             if (err) {
                 connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
                     if (err) { throw err; };
-                    res.render('viewbook', { book: book[0], error: "Failed to update" });
+                    res.render('borrow', { book: book[0], error: "Failed to update" });
                 })
 
             }

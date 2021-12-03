@@ -1,35 +1,40 @@
 <%- include('header'); -%>
 
-    <body>
-        <h2>
-            <%=book.title%>
-        </h2>
-        <h3>
-            <%=book.author%>
-        </h3><br>
-        <h4>
-            <%= book.ISBN %>
-        </h4><br><br>
-        <% if (book.status === 0) { %>
-        <h4 style="color:green">
-            Available
-        </h4><br>
-        <% } else { %>
-        <h4 style="color:red">Borrowed</h4> <br>
-        <% } %>
-        <form action="/borrow/<%= book.id %>" method="POST">
-
-            <input type="date" name="returnDate" placeholder="Pick return date"><br><br>
-            <button type="submit">Borrow</button><br><br>
-            <% if(typeof msg !='undefined' ){ %>
-                <div class="border border-light bg-success bg-opacity-10 text-success p-2 rounded mb-2">
-                    <%= msg %>
-                </div>
-                <% } if(typeof error !=='undefined' ){ %>
-                    <div class="border border-light bg-danger bg-opacity-10 text-danger p-2 rounded mb-2">
-                        <%= error %>
-                    </div>
+    <body class="position-absolute top-50 start-50 translate-middle border" style="width: 500px;">
+        <div class="p-5">
+            <h2>
+                <%=book.title%>
+            </h2>
+            <h3>
+                <%=book.author%>
+            </h3><br>
+            <h4>
+                <%= book.ISBN %>
+            </h4><br><br>
+            <% if (book.status===0) { %>
+                <h4 style="color:green">
+                    Available
+                </h4><br>
+                <% } else { %>
+                    <h4 style="color:red">Borrowed</h4> <br>
                     <% } %>
-        </form>
+                        <form action="/borrow/<%= book.id %>" method="POST">
+            
+                            <input type="date" name="returnDate" class="form-control" placeholder="Pick return date"><br><br>
+                            <button type="submit" class="btn btn-primary">Borrow</button><br><br>
+                            <% if(typeof msg !='undefined' ){ %>
+                                <div class="border border-light bg-success bg-opacity-10 text-success p-2 rounded mb-2">
+                                    <%= msg %>
+                                </div>
+                                <% } if(typeof error !=='undefined' ){ %>
+                                    <div class="border border-light bg-danger bg-opacity-10 text-danger p-2 rounded mb-2">
+                                        <%= error %>
+                                    </div>
+                                    <% } %>
+                        </form>
+                        <a href="/regular">Go back to HomePage</a>
+
+        </div>
+       
     </body>
     <%- include('footer'); -%>

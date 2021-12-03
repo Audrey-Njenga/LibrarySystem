@@ -2,8 +2,8 @@
 
     <body>
         <div id="landing" style="display: grid; grid-auto-flow: row;" class="container">
-            <div class="container">
-                <a href="/logout">Logout</a><br> <br>
+            <div class="container" >
+                <a href="/logout" class="btn btn-outline-danger mt-3">Logout</a><br> <br>
                 <h4>Welcome,</h4><br><br>
                 <form method="POST" action="/regularSearch">
                     <input class="form-control" type="text" placeholder="Search for a book" name="searchParameter">
@@ -53,7 +53,7 @@
 
                                             <%}%>
 
-                                            <td><a href="/borrowBook/<%= books[i].id %>" class="link-info">Borrow</a></td>
+                                            <td><a href="/borrowBook/<%= books[i].id %>" class="btn btn-primary">Borrow</a></td>
                                             
 
                                                 <% } %><br>
