@@ -1,19 +1,26 @@
 <%- include('header'); -%>
-<p>Update Privilege</p>
 
-<form action="/update/privilege/<%= user.id %>" method="post">
-    <div class="container">
-        <input type="radio" id="admin" name="type" value="admin">
-        <label for="admin">Admin</label><br>
-        <input type="radio" id="css" name="type" value="librarian">
-        <label for="librarian">Librarian</label><br>
-        <input type="radio" id="javascript" name="type" value="staff">
-        <label for="staff">Staff</label>
-        <input type="radio" id="javascript" name="type" value="student">
-        <label for="student">Student</label>
 
-        <button type="submit">Save</button>
-    </div>
 
-</form>
+<div class="position-absolute top-50 start-50 translate-middle border">
+    <form action="/update/privilege/<%= user.id %>" method="post" class="p-5">
+        <div class="container" style="width: 500px;">
+            <h2 class="text-center ">Update Privilege</h2>
+            <input class="form-check-input" type="radio" id="admin" name="type" value="admin">
+            <label for="admin">Admin</label><br>
+            <input class="form-check-input" type="radio" id="librarian" name="type" value="librarian">
+            <label for="librarian">Librarian</label><br>
+            <input class="form-check-input" type="radio" id="staff" name="type" value="staff">
+            <label for="staff">Staff</label>
+            <br>
+            <input class="form-check-input" type="radio" id="student" name="type" value="student">
+            <label for="student">Student</label>
+            <br><br>
+            <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </div>
+    
+    </form>
+
+</div>
+
 <%- include('footer'); -%>
