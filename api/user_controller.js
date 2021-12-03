@@ -18,6 +18,7 @@ exports.signUp = (req, res, next) => {
 
     try {
 
+
         conn.query(
             "SELECT * FROM `users` WHERE `email`=?",
             [body.email], function (err, results) {
@@ -32,28 +33,33 @@ exports.signUp = (req, res, next) => {
 
 
 
-        if (!joiPassword(complexityOptions).validate(body.password)) {
+        if (joiPassword(complexityOptions).validate(body.password).error !== undefined) {
             return res.render('signup', {
                 error: 'The password must be of length 8-16 with at least one uppercase, one number and one special character'
             })
         }
+        
+        else{
+            const hashPass = bcrypt.hashSync(body.password, 10);
 
-        const hashPass = bcrypt.hashSync(body.password, 10);
+            conn.query(
+                "INSERT INTO `users`(`firstName`, `lastName`, `email`,`password`, `type`) VALUES(?,?,?,?, 'default')",
+                [body.firstName, body.lastName, body.email, hashPass], function (err, rows) {
+                    if (rows.affectedRows !== 1) {
+                        return res.render('signup', {
+                            error: 'Your registration has failed.'
+                        });
+                    }
 
-        conn.query(
-            "INSERT INTO `users`(`firstName`, `lastName`, `email`,`password`) VALUES(?,?,?,?)",
-            [body.firstName, body.lastName, body.email, hashPass], function (err, rows) {
-                if (rows.affectedRows !== 1) {
-                    return res.render('signup', {
-                        error: 'Your registration has failed.'
+                    res.render("signup", {
+                        msg: 'You have successfully registered.'
                     });
                 }
+            );
 
-                res.render("signup", {
-                    msg: 'You have successfully registered.'
-                });
-            }
-        );
+        }
+
+        
 
 
 
