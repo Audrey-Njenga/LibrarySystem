@@ -1,0 +1,19 @@
+<%- include('header'); -%>
+
+    <body>
+        <div class="container">
+            <h2><%=book.title%></h2>
+            <div >
+                <form action="/update/<%= book.id %>"method="POST">
+                    <input type="text" name="title" placeholder="Enter title"><br><br>
+                    <input type="text" name="author" placeholder="Enter author"><br><br>
+                    <input type="text" name="ISBN" placeholder="Enter title"><br><br>
+                    <button type="submit" class="btn btn-primary">Update</button></form><br><br>
+                <form method="POST" action="/delete/<%= book.id %>"><button type="submit" class="btn btn-danger" >Delete</button></form><br><br>
+                <form action="/lend/<%= book.id %>" method="POST">
+                    <button type="submit" class="btn btn-info">Lend</button></form><br><br>
+            </div>
+        </div>
+    </body>
+
+    <%- include('footer'); -%>

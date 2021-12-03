@@ -51,3 +51,17 @@ exports.createBook = (req, res, next) => {
         console.log(e);
     }
 }
+
+exports.updateBook = (req, res) => {
+    const { body } = req;
+    try{
+        conn.query("UPDATE `books` SET ")
+    }
+    catch(err){
+        throw(err);
+    }
+}
+
+exports.deleteBook = (req, res)  => {}
+
+exports.lendBook = (req, res) => {}

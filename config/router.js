@@ -163,6 +163,18 @@ router.post('/search',
         .trim(),
     ], searchBook)
 
+router.get('/view/:book', (req, res) => {
+    console.log(req.params.book);
+    res.render('viewbook', {"book" : req.params.book});
+})
+
+router.post('/update/:id', (req, res) => {
+
+})
+
+router.post('/lend/:id', (req, res) =>{ 
+
+})
 /**
  * Staff/Student controllers
  */

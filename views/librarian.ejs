@@ -11,8 +11,9 @@
                     <button class="btn btn-primary" type="submit">Search</button>
                 </form><br><br>
 
-                <div id="results" style="height: 5em; scroll-behavior: smooth;">
-                    <% if ( typeof books !="undefined" ){ %>
+
+                <div style="height: 5em; scroll-behavior: smooth;">
+                    <% if (typeof books !="undefined" ) { %>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -21,13 +22,15 @@
                                     <th scope="col">Author</th>
                                     <th scope="col">ISBN</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% for (var i=0; i < books.length; i++ ) { %>
+
                                     <tr>
                                         <td>
-                                            <%= i %>
+                                            <%= i+1 %>
                                         </td>
                                         <td>
                                             <%= books[i].title %>
@@ -39,29 +42,36 @@
                                             <%= books[i].ISBN %>
                                         </td>
                                         <% if(books[i].status===0 ) { %>
-                                        <td class="text-primary">
-                                            Not Borrowed
-                                        </td>
-                                        <% }else if(books[i].status===1 ){ %>
-                                            <td class="text-success">
-                                                Borrowed
+                                            <td class="text-primary">
+                                                Not Borrowed
                                             </td>
-                                            <%}%>
+                                            <% }else if(books[i].status===1 ){ %>
+                                                <td class="text-success">
+                                                    Borrowed
+
+                                                </td>
+
+
+
+                                                <%}%>
+                                                    <td><a href="/view/<%= books[i] %>" clas="link-info">View</a></td>>
                                     </tr>
+
+
                                     <% } %><br>
-                            </tbody>                            
+                            </tbody>
                         </table>
                         <% } %>
                             <% if(typeof msg !='undefined' ){ %>
                                 <div class="success-msg" style="color: red;">
                                     <%= msg %>
                                 </div>
-                
+
                                 <% } %>
                 </div>
             </div>
-            
-            
+
+
             <br><br>
             <div id="upload" class="w-25 container">
                 <h4>New Book</h4>
