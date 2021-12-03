@@ -21,7 +21,8 @@
                                 <th scope="col">Author</th>
                                 <th scope="col">ISBN</th>
                                 <th scope="col">Status</th>
-                            
+                                <th scope="col">Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -50,14 +51,13 @@
 
                                             </td>
 
-
-
                                             <%}%>
-                                                
+
+                                            <td><a href="/borrowBook/<%= books[i].id %>" class="link-info">Borrow</a></td>
+                                            
+
+                                                <% } %><br>
                                                
-
-
-                                <% } %><br>
                         </tbody>
                     </table>
                     <% } %>
