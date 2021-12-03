@@ -248,41 +248,32 @@ router.get('/borrowBook/:id', (req, res) => {
 })
 
 router.post('/borrow/:id', (req, res) => {
-   const { body } = req;
-   var today = new Date();
+    const { body } = req;
+    var today = new Date();
+    if (body.returnDate <= today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()) {
+        connection.query('UPDATE books SET borrowDate=?, returnDate=?, status=? WHERE id=?', [today, body.returnDate, 1, req.params.id], function (err, results) {
+            if (results.affectedRows >= 1) {
+                connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
+                    if (err) { throw err; };
+                    res.render('viewbook', { book: book[0], msg: "Updated successfully" });
+                })
+            }
+            if (err) {
+                connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
+                    if (err) { throw err; };
+                    res.render('viewbook', { book: book[0], error: "Failed to update" });
+                })
 
-   if(body.returnDate <= today){
-    try {
-        connection.query('UPDATE books SET borrowDate=?, returnDate=?, status=? WHERE id=?', [today, body.returnDate, 1, req.params.id],
-            function (err, rows) {
-                if (err) {
-                    connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
-                        if (err) { throw err; };
-                        res.render('borrow', { book: book[0], error: "Failed to update" });
-                    })
-
-                }
-                if (rows.affectedRows >= 1) {
-                    connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
-                        if (err) { throw err; };
-                        res.render('borrow', { book: book[0], msg: "Updated successfully" });
-                    })
-                }
-            })
+            }
+        })
     }
-    catch (err) {
-        throw (err);
-    }
-   }
-   else{
-  
+    else {
         connection.query('SELECT * FROM `books` WHERE `id`=?', [req.params.id], function (err, book) {
             if (err) { throw err; };
             res.render('borrow', { book: book[0], error: "Borrow date must be later that today" });
         })
+    }
 
-    
-   }
 })
 
 /**
